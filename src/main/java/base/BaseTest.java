@@ -13,17 +13,13 @@ public class BaseTest {
 
     @BeforeMethod
     public void setUp() {
-        driver = DriverFactory.initDriver("chrome");  // can be chrome, firefox etc.
-        driver.manage().window().maximize();
-
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10)); // Add implicit wait
+        driver = DriverFactory.initDriver("chrome");
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         driver.get("https://www.amazon.in/");
     }
 
     @AfterMethod
     public void tearDown() {
-        if (driver != null) {
-            driver.quit();
-        }
+        DriverFactory.quitDriver();
     }
 }

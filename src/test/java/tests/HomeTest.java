@@ -1,14 +1,13 @@
 package tests;
 
-import java.util.ArrayList;
+import java.time.Duration;
 import java.util.List;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.Test;
 
 import base.BaseTest;
@@ -33,33 +32,36 @@ public class HomeTest extends BaseTest{
                 System.out.println("✅ Found match: " + productName);
                 
                 ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", title);
-                title.click(); // Example: click to go to product page
+                // Get the parent <a> of the product title
+                WebElement linkElement = title.findElement(By.xpath("./ancestor::a"));
+
+                // Extract the href
+                String productLink = linkElement.getAttribute("href");
+
+                // Fix relative URL issue
+                if (!productLink.startsWith("http")) {
+                    productLink = "https://www.amazon.in" + productLink;
+                }
+
+                // ✅ Open only once (don’t click, just navigate)
+                driver.get(productLink);
+
+
                 break; // Stop after first match
             }
         }
         
-        Thread.sleep(5000);
-        
-        Set<String> handles = driver.getWindowHandles();
-	    List<String> tabs = new ArrayList<>(handles);
-        driver.switchTo().window(tabs.get(1));
+        Thread.sleep(3000);
         
         // Get the element containing the price + discount text
-        WebElement priceElement = driver.findElement(By.xpath("//div[@id='corePriceDisplay_desktop_feature_div']//span[contains(@class, 'aok-offscreen')]"));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement priceElement = wait.until(
+            ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[@class='a-price-whole']"))
+        );
 
-        // Get the full text
-        String fullText = priceElement.getText(); // e.g. "₹76,790.00 with 29 percent savings"
-
-        // Use regex to extract just the amount
-        Pattern pattern = Pattern.compile("₹[\\d,]+\\.\\d{2}");
-        Matcher matcher = pattern.matcher(fullText);
-
-        if (matcher.find()) {
-            String amount = matcher.group(); // This will be ₹76,790.00
-            System.out.println("Extracted Amount: " + amount);
-        } else {
-            System.out.println("Amount not found in the text.");
-        }
+        String price = priceElement.getText().trim();
+        System.out.println("Extracted Price: ₹" + price);
+        
 		Thread.sleep(3000);
 	}
 
