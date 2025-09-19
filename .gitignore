@@ -1,0 +1,10 @@
+# Maven target directory
+/target/
+
+# Eclipse specific files
+.classpath
+.project
+.settings/
+
+# Test output (e.g., from TestNG or similar)
+test-output/
