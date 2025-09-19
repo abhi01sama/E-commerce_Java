@@ -56,7 +56,7 @@ public class HomeTest extends BaseTest{
         // Get the element containing the price + discount text
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         WebElement priceElement = wait.until(
-            ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[@class='a-price-whole']"))
+            ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='a-section a-spacing-none a-padding-none']//span[@class='a-color-price']"))
         );
 
         String price = priceElement.getText().trim();
