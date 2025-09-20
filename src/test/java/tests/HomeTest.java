@@ -58,17 +58,34 @@ public class HomeTest extends BaseTest{
             ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='a-section a-spacing-none a-padding-none']//span[@class='a-color-price']"))
         );
 
-        String price = priceElement.getText().trim();
+        String price = priceElement.getText().trim().replace("₹", "").replace(",", "").trim();
         System.out.println("Extracted Price: ₹" + price);
 		
         WebElement addCart = wait.until(
                 ExpectedConditions.visibilityOfElementLocated(By.xpath("(//span[@id='submit.add-to-cart'])[2]"))
         );
-        
 		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", addCart);
 		addCart.click();
 		
 		
+		WebElement goToCart = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[@id=\"sw-gtc\"]")));
+		goToCart.click();
+		
+		
+		WebElement priceElement2 = wait.until(
+			    ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".sc-price"))
+		);
+		String price2 = priceElement2.getText().trim().replace("₹", "").replace(",", "").trim();
+		System.out.println("Price in Cart: ₹" + price2);
+
+		// ✅ Match prices as integers or strings
+		if (price.equals(price2)) {
+			System.out.println("✅ Prices match: ₹" + price);
+		} else {
+			System.out.println("❌ Prices do not match!");
+			System.out.println("Search Result Price: ₹" + price);
+			System.out.println("Cart Price: ₹" + price2);
+		}
 		
 	}
 }
