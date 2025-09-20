@@ -21,6 +21,7 @@ public class HomeTest extends BaseTest{
 		String productName = "ASUS Gaming V16";
 		homepage.searchProduct(productName);
 		
+		Thread.sleep(2500);
 		List<WebElement> productTitles = driver.findElements(By.xpath("//h2[contains(@class, 'a-size-medium')]//span"));
 		System.out.println(productTitles.size());
 		
@@ -51,8 +52,6 @@ public class HomeTest extends BaseTest{
             }
         }
         
-        Thread.sleep(3000);
-        
         // Get the element containing the price + discount text
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         WebElement priceElement = wait.until(
@@ -61,8 +60,15 @@ public class HomeTest extends BaseTest{
 
         String price = priceElement.getText().trim();
         System.out.println("Extracted Price: ₹" + price);
+		
+        WebElement addCart = wait.until(
+                ExpectedConditions.visibilityOfElementLocated(By.xpath("(//span[@id='submit.add-to-cart'])[2]"))
+        );
         
-		Thread.sleep(3000);
+		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", addCart);
+		addCart.click();
+		
+		
+		
 	}
-
 }
