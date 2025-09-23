@@ -2,15 +2,16 @@ package pages;
 
 import java.time.Duration;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.*;
 
 public class CartPage {
-    WebDriver driver;
-    WebDriverWait wait;
+    private WebDriver driver;
+    private WebDriverWait wait;
+
+    // Locators
+    private By goToCartButton = By.id("sw-gtc");
+    private By cartPrice = By.cssSelector(".sc-price");
 
     // Constructor
     public CartPage(WebDriver driver) {
@@ -18,11 +19,6 @@ public class CartPage {
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
-    // Locators
-    By goToCartButton = By.id("sw-gtc");
-    By cartPrice = By.cssSelector(".sc-price");
-
-    // Methods
     public void goToCart() {
         WebElement goToCart = wait.until(ExpectedConditions.visibilityOfElementLocated(goToCartButton));
         goToCart.click();
