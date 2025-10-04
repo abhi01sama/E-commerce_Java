@@ -1,10 +1,60 @@
-# Maven target directory
-/target/
-
+# -----------------------
 # Eclipse specific files
-.classpath
+# -----------------------
 .project
+.classpath
 .settings/
+bin/
 
-# Test output (e.g., from TestNG or similar)
-test-output/
+# -----------------------
+# IntelliJ IDEA (if used)
+# -----------------------
+.idea/
+*.iml
+out/
+
+# -----------------------
+# Java build outputs
+# -----------------------
+target/
+*.class
+
+# -----------------------
+# Logs & reports
+# -----------------------
+*.log
+/test-output/        # TestNG default reports
+/extent-reports/     # ExtentReports outputs
+/reports/            # Custom reports folder (if used)
+/cucumber-reports/   # Cucumber HTML/JSON reports
+/allure-results/     # Allure test results
+/allure-report/
+
+
+# -----------------------
+# Maven Wrapper files (optional)
+# -----------------------
+.mvn/
+!/.mvn/wrapper/maven-wrapper.jar
+
+
+# -----------------------
+# Selenium / WebDrivers
+# -----------------------
+chromedriver.exe
+geckodriver.exe
+msedgedriver.exe
+chromedriver
+geckodriver
+msedgedriver
+
+# -----------------------
+# Environment/credentials
+# -----------------------
+*.env
+*.properties
+config/*.properties
+
+.DS_Store
+
+#https://chatgpt.com/share/68e1058d-bec8-8011-b7bf-f389764da673
