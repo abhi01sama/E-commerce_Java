@@ -2,20 +2,39 @@ package driver;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 
 public class DriverFactory {
+
     private static WebDriver driver;
 
     public static WebDriver initDriver(String browser) {
-        if (driver == null) { // 👈 prevent multiple browser launches
+
+        if (driver == null) { // prevent multiple browser launches
+
             if (browser.equalsIgnoreCase("chrome")) {
-                driver = new ChromeDriver();
+
+                ChromeOptions options = new ChromeOptions();
+                options.addArguments("--headless=new"); // ✅ headless
+                options.addArguments("--no-sandbox");
+                options.addArguments("--disable-dev-shm-usage");
+                options.addArguments("--window-size=1920,1080");
+
+                driver = new ChromeDriver(options);
+
             } else if (browser.equalsIgnoreCase("firefox")) {
-                driver = new FirefoxDriver();
+
+                FirefoxOptions options = new FirefoxOptions();
+                options.addArguments("-headless"); // ✅ headless
+
+                driver = new FirefoxDriver(options);
             }
+
             driver.manage().window().maximize();
         }
+
         return driver;
     }
 
@@ -26,7 +45,7 @@ public class DriverFactory {
     public static void quitDriver() {
         if (driver != null) {
             driver.quit();
-            driver = null; // reset so next test can create a fresh one
+            driver = null; // reset for next test
         }
     }
 }
