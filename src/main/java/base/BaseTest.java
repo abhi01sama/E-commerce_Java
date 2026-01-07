@@ -14,8 +14,10 @@ public class BaseTest {
     @BeforeMethod
     public void setUp() {
         driver = DriverFactory.initDriver("chrome");
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
         driver.get("https://www.amazon.in/");
+        
+        
     }
 
     @AfterMethod
