@@ -12,40 +12,54 @@ public class DriverFactory {
 
     public static WebDriver initDriver(String browser) {
 
-        if (driver == null) { // prevent multiple browser launches
+        if (driver == null) {
 
-            if (browser.equalsIgnoreCase("chrome")) {
+            if ("chrome".equalsIgnoreCase(browser)) {
 
                 ChromeOptions options = new ChromeOptions();
-                options.addArguments("--headless=new"); // ✅ headless
+
+                // ✅ Mandatory for CI (GitHub Actions / Linux)
+                options.addArguments("--headless=new");
                 options.addArguments("--no-sandbox");
                 options.addArguments("--disable-dev-shm-usage");
                 options.addArguments("--window-size=1920,1080");
 
+                // ✅ Reduce automation detection
+                options.addArguments("--disable-blink-features=AutomationControlled");
+
+                options.setExperimentalOption("excludeSwitches",
+                        new String[]{"enable-automation"});
+                options.setExperimentalOption("useAutomationExtension", false);
+
                 driver = new ChromeDriver(options);
 
-            } else if (browser.equalsIgnoreCase("firefox")) {
+            } else if ("firefox".equalsIgnoreCase(browser)) {
 
                 FirefoxOptions options = new FirefoxOptions();
-                options.addArguments("-headless"); // ✅ headless
+                options.addArguments("-headless");
 
                 driver = new FirefoxDriver(options);
+
+            } else {
+                throw new RuntimeException("Unsupported browser: " + browser);
             }
 
-            driver.manage().window().maximize();
         }
 
         return driver;
     }
 
     public static WebDriver getDriver() {
+        if (driver == null) {
+            throw new IllegalStateException("Driver not initialized. Call initDriver() first.");
+        }
         return driver;
     }
 
     public static void quitDriver() {
         if (driver != null) {
             driver.quit();
-            driver = null; // reset for next test
+            driver = null;
         }
     }
 }
