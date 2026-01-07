@@ -8,7 +8,7 @@ public class HomeTest extends BaseTest {
 
     @Test
     public void SearchProduct() {
-        String productName = "ASUS Gaming V16";
+        String productName = "Gaming V16";
 
         HomePage homepage = new HomePage(driver);
         homepage.searchProduct(productName);
